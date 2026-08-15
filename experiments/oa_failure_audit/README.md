@@ -152,8 +152,12 @@ using a fresh GPU runtime for each:
 
 Each notebook shallow-clones the audit branch. The first downloads the Git LFS checkpoint from GitHub and verifies
 its SHA-256; no upload bundle is required. Outputs remain under `MyDrive/OAReactDiff/audit_outputs/` across runtime
-disconnects. After the branch merges, change `REPOSITORY_URL` and the three links from `jiaxi98/OAReactDiff` to
-`chenruduan/OAReactDiff`, and change `REPOSITORY_REF` from `agent/oa-failure-audit` to `main`.
+disconnects. The final cell of each notebook also creates one stage-specific `tar.gz` and starts a browser download.
+For the pilot, keep the downloaded bundles in the Mac's `Downloads` directory or unpack them under the ignored local
+directory `experiments/oa_failure_audit/outputs/` for immediate analysis. Use Drive rather than browser downloads for
+a full `40 x 1,073` raw-candidate run. The notebooks intentionally use the fork branch
+`jiaxi98/OAReactDiff:agent/oa-failure-audit`; if the workflow is later promoted to the fork's default branch, update
+`REPOSITORY_REF` and the three Colab links to `main`.
 
 ## Runtime Choice
 
