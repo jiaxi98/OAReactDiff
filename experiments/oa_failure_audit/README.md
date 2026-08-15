@@ -146,14 +146,14 @@ The OA checkpoint requires its historical PyTorch 1.12 stack, whereas HORM uses 
 GPU4PySCF. Do not install them into one environment. Open the notebooks directly from GitHub and run them in order,
 using a fresh GPU runtime for each:
 
-- [01 candidate generation](https://colab.research.google.com/github/chenruduan/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/01_colab_generate.ipynb): resumable `8 x 8` generation and measured extrapolation.
-- [02 HORM screening](https://colab.research.google.com/github/chenruduan/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/02_colab_horm_screen.ipynb): verified paired HORM screens and DFT stratification.
-- [03 DFT Hessians](https://colab.research.google.com/github/chenruduan/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/03_colab_dft_hessian.ipynb): two-case GPU4PySCF benchmark, then the approved subset.
+- [01 candidate generation](https://colab.research.google.com/github/jiaxi98/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/01_colab_generate.ipynb): resumable `8 x 8` generation and measured extrapolation.
+- [02 HORM screening](https://colab.research.google.com/github/jiaxi98/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/02_colab_horm_screen.ipynb): verified paired HORM screens and DFT stratification.
+- [03 DFT Hessians](https://colab.research.google.com/github/jiaxi98/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/03_colab_dft_hessian.ipynb): two-case GPU4PySCF benchmark, then the approved subset.
 
 Each notebook shallow-clones the audit branch. The first downloads the Git LFS checkpoint from GitHub and verifies
 its SHA-256; no upload bundle is required. Outputs remain under `MyDrive/OAReactDiff/audit_outputs/` across runtime
-disconnects. After the branch merges, change `REPOSITORY_REF` and the three links from `agent/oa-failure-audit` to
-`main`.
+disconnects. After the branch merges, change `REPOSITORY_URL` and the three links from `jiaxi98/OAReactDiff` to
+`chenruduan/OAReactDiff`, and change `REPOSITORY_REF` from `agent/oa-failure-audit` to `main`.
 
 ## Runtime Choice
 
