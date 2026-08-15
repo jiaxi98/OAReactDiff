@@ -110,3 +110,4 @@ ENV/
 
 *.ckpt
 oa_reactdiff/trainer/wandb
+experiments/oa_failure_audit/outputs/
