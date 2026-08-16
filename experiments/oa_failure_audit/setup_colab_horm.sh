@@ -27,6 +27,9 @@ else
         python=3.10 pip "libstdcxx-ng>=15" "libgcc-ng>=15"
 fi
 
+# Prefer the environment's GNU runtime over Colab's older system copy.
+export LD_LIBRARY_PATH="${ENV_PREFIX}/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+
 "${MAMBA_BIN}" run -p "${ENV_PREFIX}" python -m pip install --upgrade \
     "pip<26" "setuptools<70" wheel
 "${MAMBA_BIN}" run -p "${ENV_PREFIX}" python -m pip install \
@@ -57,6 +60,8 @@ git -C "${HORM_DIR}" checkout --detach "${HORM_COMMIT}"
 
 "${MAMBA_BIN}" run -p "${ENV_PREFIX}" python - <<'PY'
 import sqlite3
+import sys
+from pathlib import Path
 
 import numpy
 import scipy
@@ -65,10 +70,19 @@ import torch_geometric
 import torch_scatter
 
 assert torch.cuda.is_available(), "Colab GPU is not visible to PyTorch"
+libstdcxx_paths = sorted({
+    line.rsplit(maxsplit=1)[-1]
+    for line in Path("/proc/self/maps").read_text().splitlines()
+    if "libstdc++.so.6" in line
+})
+assert libstdcxx_paths and all(
+    Path(path).is_relative_to(sys.prefix) for path in libstdcxx_paths
+), f"Wrong libstdc++ loaded: {libstdcxx_paths}"
 print("torch", torch.__version__, "cuda", torch.version.cuda)
 print("numpy", numpy.__version__, "scipy", scipy.__version__)
 print("torch_geometric", torch_geometric.__version__)
 print("torch_scatter", torch_scatter.__version__)
 print("sqlite", sqlite3.sqlite_version)
+print("libstdc++", ", ".join(libstdcxx_paths))
 print("gpu", torch.cuda.get_device_name(0))
 PY

@@ -25,6 +25,10 @@ else
         python=3.10 pip "libstdcxx-ng>=15" "libgcc-ng>=15"
 fi
 
+# Colab's system libstdc++ is older than the conda-forge ICU build. Ensure
+# subprocesses resolve the environment runtime before the system copy.
+export LD_LIBRARY_PATH="${ENV_PREFIX}/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+
 "${MAMBA_BIN}" run -p "${ENV_PREFIX}" python -m pip install --upgrade \
     "pip<26" "setuptools<70" wheel
 "${MAMBA_BIN}" run -p "${ENV_PREFIX}" python -m pip install \
@@ -44,6 +48,8 @@ fi
 
 "${MAMBA_BIN}" run -p "${ENV_PREFIX}" python - <<'PY'
 import sqlite3
+import sys
+from pathlib import Path
 
 import torch
 import torch_geometric
@@ -51,10 +57,19 @@ import torch_scatter
 from oa_reactdiff.trainer.pl_trainer import DDPMModule
 
 assert torch.cuda.is_available(), "Colab GPU is not visible to PyTorch"
+libstdcxx_paths = sorted({
+    line.rsplit(maxsplit=1)[-1]
+    for line in Path("/proc/self/maps").read_text().splitlines()
+    if "libstdc++.so.6" in line
+})
+assert libstdcxx_paths and all(
+    Path(path).is_relative_to(sys.prefix) for path in libstdcxx_paths
+), f"Wrong libstdc++ loaded: {libstdcxx_paths}"
 print("torch", torch.__version__, "cuda", torch.version.cuda)
 print("torch_geometric", torch_geometric.__version__)
 print("torch_scatter", torch_scatter.__version__)
 print("sqlite", sqlite3.sqlite_version)
+print("libstdc++", ", ".join(libstdcxx_paths))
 print("gpu", torch.cuda.get_device_name(0))
 print("DDPMModule import: ok")
 PY
