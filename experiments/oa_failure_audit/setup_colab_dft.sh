@@ -9,6 +9,7 @@ fi
 MAMBA_BIN="${MAMBA_BIN:-/usr/local/bin/micromamba}"
 MAMBA_PREFIX="${MAMBA_PREFIX:-/content/micromamba}"
 ENV_NAME="${ENV_NAME:-oa-dft}"
+ENV_PREFIX="${MAMBA_PREFIX}/envs/${ENV_NAME}"
 
 if [[ ! -x "${MAMBA_BIN}" ]]; then
     curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest \
@@ -16,16 +17,23 @@ if [[ ! -x "${MAMBA_BIN}" ]]; then
 fi
 
 export MAMBA_ROOT_PREFIX="${MAMBA_PREFIX}"
-"${MAMBA_BIN}" create -y -n "${ENV_NAME}" python=3.10 pip
-"${MAMBA_BIN}" run -n "${ENV_NAME}" python -m pip install --upgrade "pip<26"
-"${MAMBA_BIN}" run -n "${ENV_NAME}" python -m pip install \
+if [[ -x "${ENV_PREFIX}/bin/python" ]]; then
+    "${MAMBA_BIN}" install -y -p "${ENV_PREFIX}" --channel conda-forge \
+        "libstdcxx-ng>=15" "libgcc-ng>=15"
+else
+    "${MAMBA_BIN}" create -y -p "${ENV_PREFIX}" --channel conda-forge \
+        python=3.10 pip "libstdcxx-ng>=15" "libgcc-ng>=15"
+fi
+
+"${MAMBA_BIN}" run -p "${ENV_PREFIX}" python -m pip install --upgrade "pip<26"
+"${MAMBA_BIN}" run -p "${ENV_PREFIX}" python -m pip install \
     pyscf==2.7.0 \
     gpu4pyscf-cuda12x==1.3.0 \
     gpu4pyscf-libxc-cuda12x==0.5 \
     cupy-cuda12x==13.3.0 \
     cutensor-cu12==2.0.2
 
-"${MAMBA_BIN}" run -n "${ENV_NAME}" python - <<'PY'
+"${MAMBA_BIN}" run -p "${ENV_PREFIX}" python - <<'PY'
 import cupy
 import gpu4pyscf
 import pyscf
