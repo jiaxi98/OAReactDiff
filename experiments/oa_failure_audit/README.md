@@ -152,10 +152,12 @@ using a fresh GPU runtime for each:
 
 Each notebook shallow-clones the audit branch. The first downloads the Git LFS checkpoint from GitHub and verifies
 its SHA-256. Google Drive is not used. Stage 01 creates `oa_audit_01_generation_8x8_r2_j2.tar.gz`; download it from
-Colab's left Files panel. In a fresh runtime, stage 02 begins by uploading that file and ends by creating a cumulative
-stage-02 bundle. Stage 03 uploads the stage-02 bundle and creates the final cumulative result. Download each archive
-from the Files panel before disconnecting because Colab's `/content` storage is ephemeral. Keep the bundles locally
-or unpack them under the ignored local directory `experiments/oa_failure_audit/outputs/` for immediate analysis.
+Colab's left Files panel. In a fresh runtime, upload that file through the Files panel before starting stage 02. Its
+one-candidate smoke tests must pass for both HORM checkpoints before the full screens run. Stage 02 then creates a
+cumulative bundle; upload it through the Files panel before stage 03, which creates the final result.
+Download each archive from the Files panel before disconnecting because Colab's `/content` storage is ephemeral.
+Keep the bundles locally or unpack them under the ignored local directory
+`experiments/oa_failure_audit/outputs/` for immediate analysis.
 For a full `40 x 1,073` run, add durable remote storage before starting. The notebooks intentionally use the fork
 branch `jiaxi98/OAReactDiff:agent/oa-failure-audit`. If the workflow is later promoted to the fork's default branch,
 update `REPOSITORY_REF` and the three Colab links to `main`.
