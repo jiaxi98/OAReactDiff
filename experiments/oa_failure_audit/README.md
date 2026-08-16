@@ -151,14 +151,14 @@ using a fresh GPU runtime for each:
 - [03 DFT Hessians](https://colab.research.google.com/github/jiaxi98/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/03_colab_dft_hessian.ipynb): two-case GPU4PySCF benchmark, then the approved subset.
 
 Each notebook shallow-clones the audit branch. The first downloads the Git LFS checkpoint from GitHub and verifies
-its SHA-256. Google Drive is not used. Stage 01 downloads `oa_audit_01_generation_8x8_r2_j2.tar.gz` to the Mac. In a
-fresh runtime, stage 02 begins by uploading that file and ends by downloading a cumulative stage-02 bundle. Stage 03
-uploads the stage-02 bundle and downloads the final cumulative result. Colab's `/content` storage is ephemeral, so do
-not disconnect before each final download completes. Keep the bundles in the Mac's `Downloads` directory or unpack
-them under the ignored local directory `experiments/oa_failure_audit/outputs/` for immediate analysis. For a full
-`40 x 1,073` run, add durable remote storage before starting. The notebooks intentionally use the fork branch
-`jiaxi98/OAReactDiff:agent/oa-failure-audit`; if the workflow is later promoted to the fork's default branch, update
-`REPOSITORY_REF` and the three Colab links to `main`.
+its SHA-256. Google Drive is not used. Stage 01 creates `oa_audit_01_generation_8x8_r2_j2.tar.gz`; download it from
+Colab's left Files panel. In a fresh runtime, stage 02 begins by uploading that file and ends by creating a cumulative
+stage-02 bundle. Stage 03 uploads the stage-02 bundle and creates the final cumulative result. Download each archive
+from the Files panel before disconnecting because Colab's `/content` storage is ephemeral. Keep the bundles locally
+or unpack them under the ignored local directory `experiments/oa_failure_audit/outputs/` for immediate analysis.
+For a full `40 x 1,073` run, add durable remote storage before starting. The notebooks intentionally use the fork
+branch `jiaxi98/OAReactDiff:agent/oa-failure-audit`. If the workflow is later promoted to the fork's default branch,
+update `REPOSITORY_REF` and the three Colab links to `main`.
 
 ## Runtime Choice
 
