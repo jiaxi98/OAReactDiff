@@ -146,6 +146,9 @@ The OA checkpoint requires its historical PyTorch 1.12 stack, whereas HORM uses 
 GPU4PySCF. Do not install them into one environment. Open the notebooks directly from GitHub and run them in order,
 using a fresh GPU runtime for each:
 
+For exact cell order, success gates, recovery, and local handoff, follow
+[`COLAB_RUNBOOK.md`](COLAB_RUNBOOK.md).
+
 - [01 candidate generation](https://colab.research.google.com/github/jiaxi98/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/01_colab_generate.ipynb): resumable `8 x 8` generation and measured extrapolation.
 - [02 HORM screening](https://colab.research.google.com/github/jiaxi98/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/02_colab_horm_screen.ipynb): verified paired HORM screens and DFT stratification.
 - [03 DFT Hessians](https://colab.research.google.com/github/jiaxi98/OAReactDiff/blob/agent/oa-failure-audit/experiments/oa_failure_audit/03_colab_dft_hessian.ipynb): two-case GPU4PySCF benchmark, then the approved subset.
